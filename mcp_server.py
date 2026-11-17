@@ -3,6 +3,20 @@ import json
 import sys
 from client import ConstructorPredictiveClickstreamSearchOptimizer
 
+from typing import Any, Dict, List, Optional
+
+try:
+    from mcp.server.fastmcp import FastMCP
+except ImportError as exc:
+    raise SystemExit("MCP requires the mcp package. Run: python -m pip install -r requirements.txt") from exc
+
+mcp = FastMCP('genpark-constructor-predictive-clickstream-revenue-search-optimizer-skill')
+
+@mcp.tool()
+def optimize_search_results(query: str = "", candidates: Optional[List[Dict[str, Any]]] = None, user_clickstream: Optional[Dict[str, Any]] = None) -> str:
+    """Rank supplied product candidates using clickstream and revenue signals."""
+    return json.dumps(ConstructorPredictiveClickstreamSearchOptimizer().optimize_search_results(query, candidates if candidates is not None else [], user_clickstream if user_clickstream is not None else {}))
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--test":
         optimizer = ConstructorPredictiveClickstreamSearchOptimizer()
@@ -18,28 +32,7 @@ def main():
         print(f"[TEST PASS] Constructor.io Optimizer Passed! Top: {res['top_rpv_product']}")
         sys.exit(0)
 
-    for line in sys.stdin:
-        if not line.strip():
-            continue
-        try:
-            req = json.loads(line)
-            method = req.get("method")
-            msg_id = req.get("id")
-            if method == "initialize":
-                print(json.dumps({"jsonrpc": "2.0", "id": msg_id, "result": {"serverInfo": {"name": "genpark-constructor-optimizer", "version": "1.0.0"}}}))
-            elif method == "tools/list":
-                print(json.dumps({"jsonrpc": "2.0", "id": msg_id, "result": {"tools": [{"name": "optimize_search_results", "description": "Constructor clickstream and RPV search optimizer"}]}}))
-            elif method == "tools/call":
-                args = req.get("params", {}).get("arguments", {})
-                optimizer = ConstructorPredictiveClickstreamSearchOptimizer()
-                out = optimizer.optimize_search_results(args.get("query", ""), args.get("candidates", []), args.get("user_clickstream", {}))
-                print(json.dumps({"jsonrpc": "2.0", "id": msg_id, "result": {"content": [{"type": "text", "text": json.dumps(out)}]}}))
-            else:
-                print(json.dumps({"jsonrpc": "2.0", "id": msg_id, "error": {"code": -32601, "message": "Method not found"}}))
-            sys.stdout.flush()
-        except Exception as e:
-            print(json.dumps({"jsonrpc": "2.0", "error": {"code": -32603, "message": str(e)}}))
-            sys.stdout.flush()
+    mcp.run(transport="stdio")
 
 if __name__ == "__main__":
     main()
