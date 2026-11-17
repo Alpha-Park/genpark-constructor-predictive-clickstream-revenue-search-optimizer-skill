@@ -2,12 +2,12 @@
 
 [![Official Hub](https://img.shields.io/badge/GenPark-Official%20Hub-6366f1?style=for-the-badge&logo=compass&logoColor=white)](https://www.genpark.ai)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-GenPark-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/92955550)
-[![Zero External Dependencies](https://img.shields.io/badge/Dependencies-Zero%20(Pure%20Stdlib)-success?style=for-the-badge)](https://www.genpark.ai)
+[![MCP Dependency](https://img.shields.io/badge/MCP-mcp%20SDK-blue?style=for-the-badge)](requirements.txt)
 [![MCP Compliant](https://img.shields.io/badge/MCP-JSON--RPC%202.0-blue?style=for-the-badge)](https://www.genpark.ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 > **Official Website**: [https://www.genpark.ai](https://www.genpark.ai)  
-> **LinkedIn**: [https://www.linkedin.com/company/92955550](https://www.linkedin.com/company/92955550) ([https://www.llinkedin.com/company/92955550](https://www.llinkedin.com/company/92955550))
+> **LinkedIn**: [https://www.linkedin.com/company/92955550](https://www.linkedin.com/company/92955550)
 
 Constructor.io-inspired AI Search & Discovery Optimizer. Dynamically incorporates real-time user clickstream behavior, historical conversion probabilities, and revenue-per-visit (RPV) metrics to optimize product search ranking and deliver intelligent zero-result fallbacks.
 
@@ -16,18 +16,28 @@ Constructor.io-inspired AI Search & Discovery Optimizer. Dynamically incorporate
 ## 🌐 Official GenPark AI Ecosystem Links
 
 - **GenPark Official Website**: [https://www.genpark.ai](https://www.genpark.ai)
-- **LinkedIn Official Page**: [https://www.linkedin.com/company/92955550](https://www.linkedin.com/company/92955550) ([https://www.llinkedin.com/company/92955550](https://www.llinkedin.com/company/92955550))
+- **LinkedIn Official Page**: [https://www.linkedin.com/company/92955550](https://www.linkedin.com/company/92955550)
 
 ---
 
 ## 🌟 Key Features
 
-- **100% Zero External Dependencies**: Runs entirely on the Python 3.9+ standard library.
+- **Core Client**: Uses Python's standard library. The MCP server additionally requires the official MCP SDK.
 - **Model Context Protocol (MCP) Standard**: Native support for JSON-RPC 2.0 `initialize`, `tools/list`, and `tools/call`.
 - **Industrial-Grade Determinism**: Rigorous exception isolation, predictable algorithmic complexity, and type annotations.
-- **Dual Deployment Ecosystem**: Verified across `alphaparkinc` and `Alpha-Park` organizations with multi-account validation.
+- **Source Repository**: [Alpha-Park/genpark-constructor-predictive-clickstream-revenue-search-optimizer-skill](https://github.com/Alpha-Park/genpark-constructor-predictive-clickstream-revenue-search-optimizer-skill).
 
 ---
+
+## MCP Runtime Requirements
+
+Use Python 3.10+ for the MCP server. The core `client.py` has no external dependencies; MCP transport requires `mcp>=1.0.0,<2`. From this checkout, install it into the Python environment used by your MCP client:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Use the same Python interpreter to launch `mcp_server.py`. In desktop client configuration, set `command` to that interpreter's absolute path.
 
 ## 🚀 Quick Start
 
@@ -67,11 +77,7 @@ Start standard JSON-RPC 2.0 server over `stdio`:
 python mcp_server.py
 ```
 
-Execute embedded test harness:
-
-```bash
-python mcp_server.py --test
-```
+Verify connectivity with an MCP client by sending `initialize`, then `tools/list`.
 
 ---
 
@@ -84,4 +90,4 @@ Inspect [`skill.json`](skill.json) for parameter schemas and tool definitions co
 ## 📜 License & Community
 
 Licensed under the [MIT License](LICENSE). Copyright © 2026 [GenPark AI](https://www.genpark.ai).
-Follow us on LinkedIn: [https://www.linkedin.com/company/92955550](https://www.linkedin.com/company/92955550) | [https://www.llinkedin.com/company/92955550](https://www.llinkedin.com/company/92955550)
+Follow us on LinkedIn: [https://www.linkedin.com/company/92955550](https://www.linkedin.com/company/92955550)
